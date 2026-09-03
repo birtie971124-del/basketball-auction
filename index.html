@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏀 20元籃球競標</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, "Microsoft JhengHei", sans-serif;
+    background: #f4f5f7;
+    color: #222;
+}
+
+header {
+    background: #111827;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0 0 8px;
+}
+
+#game {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+.budget-area {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.player-box {
+    flex: 1;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #ddd;
+}
+
+.player-box h2 {
+    margin-top: 0;
+}
+
+.money {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.auction {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px #ddd;
+}
+
+.position {
+    display: inline-block;
+    padding: 5px 12px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.player-name {
+    font-size: 36px;
+    margin: 15px 0 5px;
+}
+
+.rating {
+    font-size: 20px;
+    color: #555;
+}
+
+.current-bid {
+    font-size: 28px;
+    margin: 20px;
+}
+
+.bid-area {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px;
+}
+
+input {
+    width: 130px;
+    padding: 12px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+.pass {
+    background: #dc2626;
+}
+
+.status {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    min-height: 30px;
+}
+
+.teams {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.team {
+    flex: 1;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.team h3 {
+    margin-top: 0;
+}
+
+.roster-player {
+    padding: 8px;
+    margin: 5px 0;
+    background: #f3f4f6;
+    border-radius: 6px;
+}
+
+#nextButton {
+    margin-top: 20px;
+    background: #16a34a;
+}
+
+.hidden {
+    display: none;
+}
+
+.final {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+@media(max-width:700px) {
+    .budget-area,
+    .teams {
+        flex-direction: column;
+    }
+
+    .player-name {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏀 20元籃球競標</h1>
+    <div>兩人競標 · 每人20元 · 共10名球員</div>
+</header>
+
+<div id="game">
+
+    <!-- 預算 -->
+    <div class="budget-area">
+
+        <div class="player-box">
+            <h2>🔵 玩家 1</h2>
+            <div class="money">
+                $<span id="money1">20</span>
+            </div>
+            <div>已選：<span id="count1">0</span>/5</div>
+        </div>
+
+        <div class="player-box">
+            <h2>🔴 玩家 2</h2>
+            <div class="money">
+                $<span id="money2">20</span>
+            </div>
+            <div>已選：<span id="count2">0</span>/5</div>
+        </div>
+
+    </div>
+
+    <!-- 競標區 -->
+    <div class="auction" id="auctionArea">
+
+        <div>
+            第 <span id="round">1</span> / 10 名球員
+        </div>
+
+        <div class="position" id="position">
+            PG
+        </div>
+
+        <div class="player-name" id="playerName">
+            Stephen Curry
+        </div>
+
+        <div class="rating">
+            OVR：<span id="rating">96</span>
+        </div>
+
+        <div class="current-bid">
+            目前出價：
+            <strong>$<span id="currentBid">0</span></strong>
+            <br>
+            <small id="bidder">尚未有人出價</small>
+        </div>
+
+        <div>
+            現在輪到：
+            <strong id="turnPlayer">玩家 1</strong>
+        </div>
+
+        <div class="bid-area">
+
+            <input
+                type="number"
+                id="bidInput"
+                min="1"
+                placeholder="輸入出價"
+            >
+
+            <button onclick="makeBid()">
+                💰 出價
+            </button>
+
+            <button class="pass" onclick="passBid()">
+                🏳️ 放棄
+            </button>
+
+        </div>
+
+        <div class="status" id="status">
+            玩家 1 請出價
+        </div>
+
+        <button id="nextButton"
+                class="hidden"
+                onclick="nextPlayer()">
+            下一名球員
+        </button>
+
+    </div>
+
+    <!-- 陣容 -->
+    <div class="teams">
+
+        <div class="team">
+            <h3>🔵 玩家 1 陣容</h3>
+            <div id="team1"></div>
+        </div>
+
+        <div class="team">
+            <h3>🔴 玩家 2 陣容</h3>
+            <div id="team2"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+// ================================
+// 球員資料
+// 每個位置各兩人
+// ================================
+
+const players = [
+
+    // PG
+    {
+        name: "Stephen Curry",
+        position: "PG",
+        rating: 96
+    },
+
+    {
+        name: "Luka Doncic",
+        position: "PG",
+        rating: 96
+    },
+
+    // SG
+    {
+        name: "Anthony Edwards",
+        position: "SG",
+        rating: 93
+    },
+
+    {
+        name: "Devin Booker",
+        position: "SG",
+        rating: 93
+    },
+
+    // SF
+    {
+        name: "LeBron James",
+        position: "SF",
+        rating: 95
+    },
+
+    {
+        name: "Jayson Tatum",
+        position: "SF",
+        rating: 95
+    },
+
+    // PF
+    {
+        name: "Giannis Antetokounmpo",
+        position: "PF",
+        rating: 97
+    },
+
+    {
+        name: "Kevin Durant",
+        position: "PF",
+        rating: 94
+    },
+
+    // C
+    {
+        name: "Nikola Jokic",
+        position: "C",
+        rating: 98
+    },
+
+    {
+        name: "Joel Embiid",
+        position: "C",
+        rating: 95
+    }
+];
+
+
+// ================================
+// 隨機打亂
+// ================================
+
+players.sort(() => Math.random() - 0.5);
+
+
+// ================================
+// 遊戲資料
+// ================================
+
+let playerIndex = 0;
+
+let money = {
+    1: 20,
+    2: 20
+};
+
+let teams = {
+    1: [],
+    2: []
+};
+
+let currentBid = 0;
+
+let currentBidder = null;
+
+let turn = 1;
+
+let auctionFinished = false;
+
+
+// ================================
+// 顯示目前球員
+// ================================
+
+function showPlayer() {
+
+    const player = players[playerIndex];
+
+    document.getElementById("round").textContent =
+        playerIndex + 1;
+
+    document.getElementById("position").textContent =
+        player.position;
+
+    document.getElementById("playerName").textContent =
+        player.name;
+
+    document.getElementById("rating").textContent =
+        player.rating;
+
+    currentBid = 0;
+    currentBidder = null;
+    auctionFinished = false;
+
+    document.getElementById("currentBid").textContent = "0";
+
+    document.getElementById("bidder").textContent =
+        "尚未有人出價";
+
+    document.getElementById("nextButton")
+        .classList.add("hidden");
+
+    turn = Math.random() < 0.5 ? 1 : 2;
+
+    updateTurn();
+
+    document.getElementById("status").textContent =
+        "玩家 " + turn + " 請出價";
+
+    document.getElementById("bidInput").value = "";
+}
+
+
+// ================================
+// 更新輪到誰
+// ================================
+
+function updateTurn() {
+
+    document.getElementById("turnPlayer").textContent =
+        "玩家 " + turn;
+
+    document.getElementById("bidInput").value = "";
+}
+
+
+// ================================
+// 出價
+// ================================
+
+function makeBid() {
+
+    if (auctionFinished) return;
+
+    const input =
+        document.getElementById("bidInput");
+
+    const bid = Number(input.value);
+
+    if (!bid || bid <= currentBid) {
+
+        alert(
+            "出價必須高於目前價格！"
+        );
+
+        return;
+    }
+
+    if (bid > money[turn]) {
+
+        alert(
+            "你的預算不夠！你只剩 $" +
+            money[turn]
+        );
+
+        return;
+    }
+
+    currentBid = bid;
+
+    currentBidder = turn;
+
+    document.getElementById("currentBid").textContent =
+        currentBid;
+
+    document.getElementById("bidder").textContent =
+        "玩家 " + currentBidder + " 目前領先";
+
+    // 換另一個玩家
+    turn = turn === 1 ? 2 : 1;
+
+    updateTurn();
+
+    document.getElementById("status").textContent =
+        "玩家 " + turn + " 請決定是否加價";
+
+}
+
+
+// ================================
+// 放棄
+// ================================
+
+function passBid() {
+
+    if (auctionFinished) return;
+
+    // 如果完全沒有人出價
+    if (currentBid === 0) {
+
+        alert(
+            "至少要先有人出價！"
+        );
+
+        return;
+    }
+
+    auctionFinished = true;
+
+    const winner = currentBidder;
+
+    const player = players[playerIndex];
+
+    money[winner] -= currentBid;
+
+    teams[winner].push({
+        ...player,
+        price: currentBid
+    });
+
+    document.getElementById("status").textContent =
+        "🏆 玩家 " + winner +
+        " 以 $" + currentBid +
+        " 得標！";
+
+    updateMoney();
+
+    updateTeams();
+
+    document.getElementById("nextButton")
+        .classList.remove("hidden");
+
+    document.getElementById("bidInput").disabled = true;
+
+}
+
+
+// ================================
+// 下一名球員
+// ================================
+
+function nextPlayer() {
+
+    document.getElementById("bidInput").disabled = false;
+
+    playerIndex++;
+
+    if (playerIndex >= players.length) {
+
+        endGame();
+
+        return;
+    }
+
+    showPlayer();
+}
+
+
+// ================================
+// 更新錢
+// ================================
+
+function updateMoney() {
+
+    document.getElementById("money1").textContent =
+        money[1];
+
+    document.getElementById("money2").textContent =
+        money[2];
+
+    document.getElementById("count1").textContent =
+        teams[1].length;
+
+    document.getElementById("count2").textContent =
+        teams[2].length;
+}
+
+
+// ================================
+// 更新陣容
+// ================================
+
+function updateTeams() {
+
+    document.getElementById("team1").innerHTML =
+        "";
+
+    document.getElementById("team2").innerHTML =
+        "";
+
+    teams[1].forEach(p => {
+
+        document.getElementById("team1")
+            .innerHTML +=
+            `
+            <div class="roster-player">
+                <strong>${p.position}</strong>
+                ${p.name}
+                — $${p.price}
+                <br>
+                OVR ${p.rating}
+            </div>
+            `;
+
+    });
+
+    teams[2].forEach(p => {
+
+        document.getElementById("team2")
+            .innerHTML +=
+            `
+            <div class="roster-player">
+                <strong>${p.position}</strong>
+                ${p.name}
+                — $${p.price}
+                <br>
+                OVR ${p.rating}
+            </div>
+            `;
+
+    });
+
+}
+
+
+// ================================
+// 遊戲結束
+// ================================
+
+function endGame() {
+
+    document.getElementById("auctionArea")
+        .innerHTML = `
+
+        <div class="final">
+
+            <h1>🏆 選秀完成！</h1>
+
+            <h2>玩家 1</h2>
+            <p>
+                剩餘預算：$${money[1]}
+            </p>
+
+            <h2>玩家 2</h2>
+            <p>
+                剩餘預算：$${money[2]}
+            </p>
+
+            <p>
+                接下來就可以進入
+                <strong>7戰4勝模擬</strong>！
+            </p>
+
+        </div>
+
+    `;
+
+    updateMoney();
+    updateTeams();
+}
+
+
+// ================================
+// 初始化
+// ================================
+
+showPlayer();
+updateMoney();
+updateTeams();
+
+</script>
+
+</body>
+</html>
