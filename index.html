@@ -2,699 +2,1619 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏀 20元籃球競標</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🏀 20點籃球選秀</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,"Noto Sans TC",sans-serif;
+  background:#101827;
+  color:#fff;
 }
-
-body {
-    margin: 0;
-    font-family: Arial, "Microsoft JhengHei", sans-serif;
-    background: #f4f5f7;
-    color: #222;
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:18px;
 }
-
-header {
-    background: #111827;
-    color: white;
-    padding: 20px;
-    text-align: center;
+h1{text-align:center;margin:8px 0 20px}
+.card{
+  background:#1d2939;
+  border-radius:18px;
+  padding:20px;
+  margin:14px 0;
+  box-shadow:0 5px 20px #0005;
 }
-
-header h1 {
-    margin: 0 0 8px;
+button,input{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:0;
+  border-radius:12px;
+  font-size:17px;
 }
-
-#game {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
+button{
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
 }
-
-.budget-area {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+button:disabled{
+  background:#4b5563;
 }
-
-.player-box {
-    flex: 1;
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px #ddd;
+input{background:#fff;color:#111}
+.hidden{display:none}
+.center{text-align:center}
+.room{
+  font-size:36px;
+  font-weight:bold;
+  letter-spacing:6px;
+  text-align:center;
+  margin:15px 0;
 }
-
-.player-box h2 {
-    margin-top: 0;
+.mode-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
 }
-
-.money {
-    font-size: 24px;
-    font-weight: bold;
+.mode{
+  background:#26364c;
+  padding:20px 10px;
+  border-radius:15px;
+  text-align:center;
+  cursor:pointer;
 }
-
-.auction {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 2px 8px #ddd;
+.mode:hover{background:#315071}
+.player-name{
+  font-size:30px;
+  text-align:center;
+  font-weight:bold;
 }
-
-.position {
-    display: inline-block;
-    padding: 5px 12px;
-    background: #e5e7eb;
-    border-radius: 20px;
-    font-weight: bold;
+.position{
+  text-align:center;
+  font-size:19px;
+  margin-top:8px;
 }
-
-.player-name {
-    font-size: 36px;
-    margin: 15px 0 5px;
+.ovr{
+  text-align:center;
+  font-size:26px;
+  margin-top:8px;
 }
-
-.rating {
-    font-size: 20px;
-    color: #555;
+.price{
+  text-align:center;
+  font-size:45px;
+  font-weight:bold;
+  margin:20px 0;
 }
-
-.current-bid {
-    font-size: 28px;
-    margin: 20px;
+.money-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
-
-.bid-area {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 15px;
+.money{
+  background:#26364c;
+  padding:14px;
+  border-radius:12px;
+  text-align:center;
 }
-
-input {
-    width: 130px;
-    padding: 12px;
-    font-size: 18px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
+.money b{
+  display:block;
+  font-size:25px;
+  margin-top:5px;
 }
-
-button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    background: #2563eb;
-    color: white;
-    font-size: 17px;
-    cursor: pointer;
+.status{
+  text-align:center;
+  min-height:30px;
+  font-size:18px;
 }
-
-button:hover {
-    opacity: 0.85;
+.teams{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
-
-button:disabled {
-    background: #aaa;
-    cursor: not-allowed;
+.team{
+  background:#26364c;
+  border-radius:12px;
+  padding:12px;
 }
-
-.pass {
-    background: #dc2626;
+.team h3{text-align:center}
+.team p{
+  margin:8px 0;
+  font-size:14px;
 }
-
-.status {
-    margin-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    min-height: 30px;
+.score{
+  font-size:32px;
+  text-align:center;
+  font-weight:bold;
 }
-
-.teams {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
+.game{
+  background:#26364c;
+  padding:10px;
+  border-radius:10px;
+  margin:8px 0;
+  text-align:center;
 }
-
-.team {
-    flex: 1;
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-}
-
-.team h3 {
-    margin-top: 0;
-}
-
-.roster-player {
-    padding: 8px;
-    margin: 5px 0;
-    background: #f3f4f6;
-    border-radius: 6px;
-}
-
-#nextButton {
-    margin-top: 20px;
-    background: #16a34a;
-}
-
-.hidden {
-    display: none;
-}
-
-.final {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    text-align: center;
-}
-
-@media(max-width:700px) {
-    .budget-area,
-    .teams {
-        flex-direction: column;
-    }
-
-    .player-name {
-        font-size: 28px;
-    }
+.good{color:#4ade80}
+.warn{color:#facc15}
+.bad{color:#f87171}
+.small{
+  color:#b9c4d4;
+  font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>🏀 20元籃球競標</h1>
-    <div>兩人競標 · 每人20元 · 共10名球員</div>
-</header>
+<div class="container">
 
-<div id="game">
+<h1>🏀 20點籃球選秀</h1>
 
-    <!-- 預算 -->
-    <div class="budget-area">
+<!-- ================= 首頁 ================= -->
 
-        <div class="player-box">
-            <h2>🔵 玩家 1</h2>
-            <div class="money">
-                $<span id="money1">20</span>
-            </div>
-            <div>已選：<span id="count1">0</span>/5</div>
-        </div>
+<div id="home" class="card">
 
-        <div class="player-box">
-            <h2>🔴 玩家 2</h2>
-            <div class="money">
-                $<span id="money2">20</span>
-            </div>
-            <div>已選：<span id="count2">0</span>/5</div>
-        </div>
+  <h2 class="center">選擇遊戲模式</h2>
 
+  <div class="mode-grid">
+
+    <div class="mode" onclick="showSingle()">
+      <div style="font-size:45px">🤖</div>
+      <b>單人模式</b>
+      <p class="small">你 vs 電腦</p>
     </div>
 
-    <!-- 競標區 -->
-    <div class="auction" id="auctionArea">
-
-        <div>
-            第 <span id="round">1</span> / 10 名球員
-        </div>
-
-        <div class="position" id="position">
-            PG
-        </div>
-
-        <div class="player-name" id="playerName">
-            Stephen Curry
-        </div>
-
-        <div class="rating">
-            OVR：<span id="rating">96</span>
-        </div>
-
-        <div class="current-bid">
-            目前出價：
-            <strong>$<span id="currentBid">0</span></strong>
-            <br>
-            <small id="bidder">尚未有人出價</small>
-        </div>
-
-        <div>
-            現在輪到：
-            <strong id="turnPlayer">玩家 1</strong>
-        </div>
-
-        <div class="bid-area">
-
-            <input
-                type="number"
-                id="bidInput"
-                min="1"
-                placeholder="輸入出價"
-            >
-
-            <button onclick="makeBid()">
-                💰 出價
-            </button>
-
-            <button class="pass" onclick="passBid()">
-                🏳️ 放棄
-            </button>
-
-        </div>
-
-        <div class="status" id="status">
-            玩家 1 請出價
-        </div>
-
-        <button id="nextButton"
-                class="hidden"
-                onclick="nextPlayer()">
-            下一名球員
-        </button>
-
+    <div class="mode" onclick="showOnline()">
+      <div style="font-size:45px">👥</div>
+      <b>雙人線上</b>
+      <p class="small">兩支手機即時競標</p>
     </div>
 
-    <!-- 陣容 -->
-    <div class="teams">
-
-        <div class="team">
-            <h3>🔵 玩家 1 陣容</h3>
-            <div id="team1"></div>
-        </div>
-
-        <div class="team">
-            <h3>🔴 玩家 2 陣容</h3>
-            <div id="team2"></div>
-        </div>
-
-    </div>
+  </div>
 
 </div>
 
 
-<script>
+<!-- ================= 單人設定 ================= -->
 
-// ================================
-// 球員資料
-// 每個位置各兩人
-// ================================
+<div id="singleSetup" class="card hidden">
 
-const players = [
+  <h2>🤖 單人模式</h2>
 
-    // PG
-    {
-        name: "Stephen Curry",
-        position: "PG",
-        rating: 96
-    },
+  <p>你和電腦各有 <b>20 點虛擬點數</b>。</p>
 
-    {
-        name: "Luka Doncic",
-        position: "PG",
-        rating: 96
-    },
+  <button onclick="startSingle()">
+    開始選秀
+  </button>
 
-    // SG
-    {
-        name: "Anthony Edwards",
-        position: "SG",
-        rating: 93
-    },
+</div>
 
-    {
-        name: "Devin Booker",
-        position: "SG",
-        rating: 93
-    },
 
-    // SF
-    {
-        name: "LeBron James",
-        position: "SF",
-        rating: 95
-    },
+<!-- ================= 線上 ================= -->
 
-    {
-        name: "Jayson Tatum",
-        position: "SF",
-        rating: 95
-    },
+<div id="onlineSetup" class="card hidden">
 
-    // PF
-    {
-        name: "Giannis Antetokounmpo",
-        position: "PF",
-        rating: 97
-    },
+  <h2>👥 雙人線上</h2>
 
-    {
-        name: "Kevin Durant",
-        position: "PF",
-        rating: 94
-    },
+  <button onclick="createRoom()">
+    建立房間
+  </button>
 
-    // C
-    {
-        name: "Nikola Jokic",
-        position: "C",
-        rating: 98
-    },
+  <input
+    id="joinCode"
+    placeholder="輸入房間代碼"
+    maxlength="6"
+  >
 
-    {
-        name: "Joel Embiid",
-        position: "C",
-        rating: 95
-    }
+  <button onclick="joinRoom()">
+    加入房間
+  </button>
+
+  <p id="onlineMsg"></p>
+
+</div>
+
+
+<!-- ================= 等待室 ================= -->
+
+<div id="waiting" class="card hidden">
+
+  <h2 class="center">等待另一位玩家</h2>
+
+  <div class="room" id="roomCode"></div>
+
+  <p class="center" id="waitingStatus"></p>
+
+  <button id="startOnlineButton"
+          onclick="startOnlineGame()"
+          disabled>
+    開始選秀
+  </button>
+
+</div>
+
+
+<!-- ================= 競標 ================= -->
+
+<div id="auction" class="hidden">
+
+  <div class="card">
+
+    <div class="money-box">
+
+      <div class="money">
+        我的虛擬點數
+        <b id="myMoney">20</b>
+      </div>
+
+      <div class="money">
+        對手虛擬點數
+        <b id="enemyMoney">20</b>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="player-name" id="playerName">
+      ---
+    </div>
+
+    <div class="position" id="playerPosition">
+      ---
+    </div>
+
+    <div class="ovr">
+      OVR <span id="playerOVR">--</span>
+    </div>
+
+    <div class="price">
+      <span id="currentBid">0</span>
+    </div>
+
+    <div class="status" id="auctionStatus">
+      ---
+    </div>
+
+    <input
+      id="bidInput"
+      type="number"
+      min="1"
+      placeholder="輸入出價"
+    >
+
+    <button id="bidButton" onclick="bid()">
+      出價
+    </button>
+
+    <button id="passButton"
+            onclick="pass()">
+      放棄
+    </button>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>目前隊伍</h2>
+
+    <div class="teams">
+
+      <div class="team">
+        <h3>你</h3>
+        <div id="myTeam"></div>
+      </div>
+
+      <div class="team">
+        <h3>對手</h3>
+        <div id="enemyTeam"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= 比賽 ================= -->
+
+<div id="series" class="card hidden">
+
+  <h2 class="center">🏆 7 戰 4 勝</h2>
+
+  <div class="score">
+    <span id="myWins">0</span>
+    -
+    <span id="enemyWins">0</span>
+  </div>
+
+  <div id="gameLog"></div>
+
+  <button id="nextGameButton"
+          onclick="playNextGame()">
+    開始下一場
+  </button>
+
+</div>
+
+
+<!-- ================= 結束 ================= -->
+
+<div id="result" class="card hidden">
+
+  <h2 class="center">🏆 系列賽結果</h2>
+
+  <div id="finalResult"
+       class="center"
+       style="font-size:28px">
+  </div>
+
+  <button onclick="location.reload()">
+    再玩一次
+  </button>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  set,
+  get,
+  update,
+  onValue
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+
+import {
+  getAuth,
+  signInAnonymously
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+
+const firebaseConfig = {
+
+  apiKey:
+  "AIzaSyDmznVguxE2kvvcmbtBu5FE3PNi_Bt4HoU",
+
+  authDomain:
+  "basketball-draft-13f1a.firebaseapp.com",
+
+  projectId:
+  "basketball-draft-13f1a",
+
+  storageBucket:
+  "basketball-draft-13f1a.firebasestorage.app",
+
+  messagingSenderId:
+  "783139855533",
+
+  appId:
+  "1:783139855533:web:079f8e1450f78583227a24"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+const auth = getAuth(app);
+
+let user = null;
+
+signInAnonymously(auth)
+.then(result=>{
+  user=result.user;
+})
+.catch(err=>{
+  console.error(err);
+  alert("Firebase 登入失敗："+err.message);
+});
+
+
+/* =====================================================
+   10 位球員
+===================================================== */
+
+const PLAYERS = [
+
+{
+ name:"Stephen Curry",
+ position:"PG",
+ ovr:94,
+ shooting:98,
+ offense:97,
+ defense:78,
+ rebounding:55,
+ passing:97,
+ athletic:88
+},
+
+{
+ name:"Luka Doncic",
+ position:"PG",
+ ovr:95,
+ shooting:95,
+ offense:98,
+ defense:80,
+ rebounding:70,
+ passing:98,
+ athletic:84
+},
+
+{
+ name:"Anthony Edwards",
+ position:"SG",
+ ovr:95,
+ shooting:90,
+ offense:95,
+ defense:88,
+ rebounding:65,
+ passing:86,
+ athletic:98
+},
+
+{
+ name:"Devin Booker",
+ position:"SG",
+ ovr:93,
+ shooting:95,
+ offense:94,
+ defense:75,
+ rebounding:55,
+ passing:88,
+ athletic:88
+},
+
+{
+ name:"LeBron James",
+ position:"SF",
+ ovr:94,
+ shooting:88,
+ offense:96,
+ defense:88,
+ rebounding:80,
+ passing:95,
+ athletic:91
+},
+
+{
+ name:"Jayson Tatum",
+ position:"SF",
+ ovr:94,
+ shooting:92,
+ offense:94,
+ defense:88,
+ rebounding:78,
+ passing:88,
+ athletic:89
+},
+
+{
+ name:"Giannis Antetokounmpo",
+ position:"PF",
+ ovr:97,
+ shooting:78,
+ offense:98,
+ defense:98,
+ rebounding:96,
+ passing:90,
+ athletic:99
+},
+
+{
+ name:"Kevin Durant",
+ position:"PF",
+ ovr:93,
+ shooting:97,
+ offense:96,
+ defense:84,
+ rebounding:75,
+ passing:86,
+ athletic:91
+},
+
+{
+ name:"Nikola Jokic",
+ position:"C",
+ ovr:98,
+ shooting:94,
+ offense:99,
+ defense:84,
+ rebounding:96,
+ passing:99,
+ athletic:76
+},
+
+{
+ name:"Joel Embiid",
+ position:"C",
+ ovr:95,
+ shooting:90,
+ offense:96,
+ defense:93,
+ rebounding:94,
+ passing:80,
+ athletic:82
+}
+
 ];
 
 
-// ================================
-// 隨機打亂
-// ================================
+/* =====================================================
+   工具
+===================================================== */
 
-players.sort(() => Math.random() - 0.5);
+function shuffle(arr){
+
+  return [...arr].sort(
+    ()=>Math.random()-0.5
+  );
+
+}
 
 
-// ================================
-// 遊戲資料
-// ================================
+function roomCode(){
 
-let playerIndex = 0;
+  const chars =
+  "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-let money = {
-    1: 20,
-    2: 20
+  let s="";
+
+  for(let i=0;i<6;i++){
+
+    s += chars[
+      Math.floor(Math.random()*chars.length)
+    ];
+
+  }
+
+  return s;
+
+}
+
+
+function hideAll(){
+
+  document
+  .querySelectorAll(".container > div")
+  .forEach(x=>x.classList.add("hidden"));
+
+}
+
+
+/* =====================================================
+   模式
+===================================================== */
+
+window.showSingle=function(){
+
+  hideAll();
+
+  document
+  .getElementById("singleSetup")
+  .classList.remove("hidden");
+
 };
 
-let teams = {
-    1: [],
-    2: []
+
+window.showOnline=function(){
+
+  hideAll();
+
+  document
+  .getElementById("onlineSetup")
+  .classList.remove("hidden");
+
 };
 
-let currentBid = 0;
 
-let currentBidder = null;
+/* =====================================================
+   遊戲變數
+===================================================== */
 
-let turn = 1;
+let mode="";
 
-let auctionFinished = false;
+let roomId="";
 
+let role=0;
 
-// ================================
-// 顯示目前球員
-// ================================
+let localGame=null;
 
-function showPlayer() {
+let myWins=0;
 
-    const player = players[playerIndex];
+let enemyWins=0;
 
-    document.getElementById("round").textContent =
-        playerIndex + 1;
-
-    document.getElementById("position").textContent =
-        player.position;
-
-    document.getElementById("playerName").textContent =
-        player.name;
-
-    document.getElementById("rating").textContent =
-        player.rating;
-
-    currentBid = 0;
-    currentBidder = null;
-    auctionFinished = false;
-
-    document.getElementById("currentBid").textContent = "0";
-
-    document.getElementById("bidder").textContent =
-        "尚未有人出價";
-
-    document.getElementById("nextButton")
-        .classList.add("hidden");
-
-    turn = Math.random() < 0.5 ? 1 : 2;
-
-    updateTurn();
-
-    document.getElementById("status").textContent =
-        "玩家 " + turn + " 請出價";
-
-    document.getElementById("bidInput").value = "";
-}
+let gameNumber=0;
 
 
-// ================================
-// 更新輪到誰
-// ================================
+/* =====================================================
+   單人模式
+===================================================== */
 
-function updateTurn() {
+window.startSingle=function(){
 
-    document.getElementById("turnPlayer").textContent =
-        "玩家 " + turn;
+  mode="single";
 
-    document.getElementById("bidInput").value = "";
-}
+  const list=shuffle(PLAYERS);
+
+  localGame={
+
+    players:list,
+
+    index:0,
+
+    bid:0,
+
+    bidder:0,
+
+    turn:1,
+
+    money1:20,
+
+    money2:20,
+
+    team1:[],
+
+    team2:[]
+
+  };
+
+  startAuctionSingle();
+
+};
 
 
-// ================================
-// 出價
-// ================================
+function startAuctionSingle(){
 
-function makeBid() {
+  hideAll();
 
-    if (auctionFinished) return;
+  document
+  .getElementById("auction")
+  .classList.remove("hidden");
 
-    const input =
-        document.getElementById("bidInput");
-
-    const bid = Number(input.value);
-
-    if (!bid || bid <= currentBid) {
-
-        alert(
-            "出價必須高於目前價格！"
-        );
-
-        return;
-    }
-
-    if (bid > money[turn]) {
-
-        alert(
-            "你的預算不夠！你只剩 $" +
-            money[turn]
-        );
-
-        return;
-    }
-
-    currentBid = bid;
-
-    currentBidder = turn;
-
-    document.getElementById("currentBid").textContent =
-        currentBid;
-
-    document.getElementById("bidder").textContent =
-        "玩家 " + currentBidder + " 目前領先";
-
-    // 換另一個玩家
-    turn = turn === 1 ? 2 : 1;
-
-    updateTurn();
-
-    document.getElementById("status").textContent =
-        "玩家 " + turn + " 請決定是否加價";
+  renderSingle();
 
 }
 
 
-// ================================
-// 放棄
-// ================================
+function renderSingle(){
 
-function passBid() {
+  const g=localGame;
 
-    if (auctionFinished) return;
+  if(g.index>=g.players.length){
 
-    // 如果完全沒有人出價
-    if (currentBid === 0) {
+    startSeries(
+      g.team1,
+      g.team2
+    );
 
-        alert(
-            "至少要先有人出價！"
-        );
+    return;
 
-        return;
+  }
+
+
+  const p=g.players[g.index];
+
+  document
+  .getElementById("playerName")
+  .textContent=p.name;
+
+  document
+  .getElementById("playerPosition")
+  .textContent="位置："+p.position;
+
+  document
+  .getElementById("playerOVR")
+  .textContent=p.ovr;
+
+  document
+  .getElementById("currentBid")
+  .textContent=g.bid+" 點";
+
+  document
+  .getElementById("myMoney")
+  .textContent=g.money1;
+
+  document
+  .getElementById("enemyMoney")
+  .textContent=g.money2;
+
+  showTeams(g.team1,g.team2);
+
+
+  document
+  .getElementById("bidButton")
+  .disabled=g.turn!==1;
+
+  document
+  .getElementById("passButton")
+  .disabled=g.turn!==1;
+
+
+  document
+  .getElementById("auctionStatus")
+  .textContent=
+  g.turn===1
+  ?"你的回合"
+  :"電腦思考中...";
+
+
+  if(g.turn===2){
+
+    setTimeout(cpuBid,700);
+
+  }
+
+}
+
+
+/* =====================================================
+   玩家出價
+===================================================== */
+
+window.bid=function(){
+
+  if(mode==="single"){
+
+    singleBid();
+
+  }
+
+  else{
+
+    onlineBid();
+
+  }
+
+};
+
+
+function singleBid(){
+
+  const g=localGame;
+
+  const value=
+  Number(
+    document
+    .getElementById("bidInput")
+    .value
+  );
+
+  if(!value ||
+     value<=g.bid){
+
+    alert("出價必須高於目前價格");
+
+    return;
+
+  }
+
+  if(value>g.money1){
+
+    alert("你的點數不夠");
+
+    return;
+
+  }
+
+
+  g.bid=value;
+
+  g.bidder=1;
+
+  g.turn=2;
+
+  document
+  .getElementById("bidInput")
+  .value="";
+
+  renderSingle();
+
+}
+
+
+/* =====================================================
+   電腦 AI
+===================================================== */
+
+function cpuBid(){
+
+  const g=localGame;
+
+  if(g.turn!==2)return;
+
+  const p=g.players[g.index];
+
+  const need=
+  Math.round(
+    p.ovr*0.12
+    +
+    Math.random()*5
+  );
+
+  const next=g.bid+1;
+
+  if(
+    next<=g.money2 &&
+    next<=need
+  ){
+
+    g.bid=next;
+
+    g.bidder=2;
+
+    g.turn=1;
+
+    renderSingle();
+
+  }
+
+  else{
+
+    cpuPass();
+
+  }
+
+}
+
+
+function cpuPass(){
+
+  const g=localGame;
+
+  if(g.bid===0){
+
+    g.turn=1;
+
+    renderSingle();
+
+    return;
+
+  }
+
+  awardSingle();
+
+}
+
+
+/* =====================================================
+   玩家放棄
+===================================================== */
+
+window.pass=function(){
+
+  if(mode==="single"){
+
+    if(localGame.bid===0){
+
+      alert("目前還沒有人出價");
+
+      return;
+
     }
 
-    auctionFinished = true;
+    awardSingle();
 
-    const winner = currentBidder;
+  }
 
-    const player = players[playerIndex];
+  else{
 
-    money[winner] -= currentBid;
+    onlinePass();
 
-    teams[winner].push({
-        ...player,
-        price: currentBid
-    });
+  }
 
-    document.getElementById("status").textContent =
-        "🏆 玩家 " + winner +
-        " 以 $" + currentBid +
-        " 得標！";
+};
 
-    updateMoney();
 
-    updateTeams();
+/* =====================================================
+   單人結算
+===================================================== */
 
-    document.getElementById("nextButton")
+function awardSingle(){
+
+  const g=localGame;
+
+  const winner=g.bidder;
+
+  const p=g.players[g.index];
+
+
+  if(winner===1){
+
+    g.money1-=g.bid;
+
+    g.team1.push(p);
+
+  }
+
+  else{
+
+    g.money2-=g.bid;
+
+    g.team2.push(p);
+
+  }
+
+
+  g.index++;
+
+  g.bid=0;
+
+  g.bidder=0;
+
+  g.turn=1;
+
+  renderSingle();
+
+}
+
+
+/* =====================================================
+   顯示隊伍
+===================================================== */
+
+function showTeams(a,b){
+
+  document
+  .getElementById("myTeam")
+  .innerHTML=
+  a.map(
+    p=>`<p>${p.position} ${p.name}</p>`
+  ).join("");
+
+  document
+  .getElementById("enemyTeam")
+  .innerHTML=
+  b.map(
+    p=>`<p>${p.position} ${p.name}</p>`
+  ).join("");
+
+}
+
+
+/* =====================================================
+   線上建立房間
+===================================================== */
+
+window.createRoom=async function(){
+
+  if(!user){
+
+    alert("Firebase 尚未連線");
+
+    return;
+
+  }
+
+  mode="online";
+
+  role=1;
+
+  roomId=roomCode();
+
+
+  const room={
+
+    host:user.uid,
+
+    players:{
+
+      p1:{
+        uid:user.uid,
+        money:20,
+        team:[]
+      }
+
+    },
+
+    list:shuffle(PLAYERS),
+
+    started:false,
+
+    index:0,
+
+    bid:0,
+
+    bidder:0,
+
+    turn:1
+
+  };
+
+
+  await set(
+    ref(db,"rooms/"+roomId),
+    room
+  );
+
+
+  showWaiting();
+
+  listenRoom();
+
+};
+
+
+function showWaiting(){
+
+  hideAll();
+
+  document
+  .getElementById("waiting")
+  .classList.remove("hidden");
+
+  document
+  .getElementById("roomCode")
+  .textContent=roomId;
+
+}
+
+
+window.joinRoom=async function(){
+
+  if(!user){
+
+    alert("Firebase 尚未連線");
+
+    return;
+
+  }
+
+  mode="online";
+
+  role=2;
+
+  roomId=
+  document
+  .getElementById("joinCode")
+  .value
+  .trim()
+  .toUpperCase();
+
+
+  if(!roomId){
+
+    alert("請輸入房間代碼");
+
+    return;
+
+  }
+
+
+  const snap=
+  await get(
+    ref(db,"rooms/"+roomId)
+  );
+
+
+  if(!snap.exists()){
+
+    alert("找不到房間");
+
+    return;
+
+  }
+
+
+  const room=snap.val();
+
+
+  if(room.players?.p2){
+
+    alert("房間已滿");
+
+    return;
+
+  }
+
+
+  await update(
+    ref(db,"rooms/"+roomId),
+    {
+
+      "players/p2":{
+        uid:user.uid,
+        money:20,
+        team:[]
+      }
+
+    }
+  );
+
+
+  showWaiting();
+
+  listenRoom();
+
+};
+
+
+/* =====================================================
+   監聽房間
+===================================================== */
+
+function listenRoom(){
+
+  onValue(
+    ref(db,"rooms/"+roomId),
+    snap=>{
+
+      if(!snap.exists())return;
+
+      const r=snap.val();
+
+      const count=
+      (r.players?.p1?1:0)
+      +
+      (r.players?.p2?1:0);
+
+
+      document
+      .getElementById("waitingStatus")
+      .textContent=
+      `目前 ${count}/2 位玩家`;
+
+
+      document
+      .getElementById("startOnlineButton")
+      .disabled=
+      !(role===1 && count===2);
+
+
+      if(r.started){
+
+        hideAll();
+
+        document
+        .getElementById("auction")
         .classList.remove("hidden");
 
-    document.getElementById("bidInput").disabled = true;
+        renderOnline(r);
 
-}
+      }
 
-
-// ================================
-// 下一名球員
-// ================================
-
-function nextPlayer() {
-
-    document.getElementById("bidInput").disabled = false;
-
-    playerIndex++;
-
-    if (playerIndex >= players.length) {
-
-        endGame();
-
-        return;
     }
-
-    showPlayer();
-}
-
-
-// ================================
-// 更新錢
-// ================================
-
-function updateMoney() {
-
-    document.getElementById("money1").textContent =
-        money[1];
-
-    document.getElementById("money2").textContent =
-        money[2];
-
-    document.getElementById("count1").textContent =
-        teams[1].length;
-
-    document.getElementById("count2").textContent =
-        teams[2].length;
-}
-
-
-// ================================
-// 更新陣容
-// ================================
-
-function updateTeams() {
-
-    document.getElementById("team1").innerHTML =
-        "";
-
-    document.getElementById("team2").innerHTML =
-        "";
-
-    teams[1].forEach(p => {
-
-        document.getElementById("team1")
-            .innerHTML +=
-            `
-            <div class="roster-player">
-                <strong>${p.position}</strong>
-                ${p.name}
-                — $${p.price}
-                <br>
-                OVR ${p.rating}
-            </div>
-            `;
-
-    });
-
-    teams[2].forEach(p => {
-
-        document.getElementById("team2")
-            .innerHTML +=
-            `
-            <div class="roster-player">
-                <strong>${p.position}</strong>
-                ${p.name}
-                — $${p.price}
-                <br>
-                OVR ${p.rating}
-            </div>
-            `;
-
-    });
+  );
 
 }
 
 
-// ================================
-// 遊戲結束
-// ================================
+/* =====================================================
+   線上開始
+===================================================== */
 
-function endGame() {
+window.startOnlineGame=async function(){
 
-    document.getElementById("auctionArea")
-        .innerHTML = `
+  if(role!==1)return;
 
-        <div class="final">
 
-            <h1>🏆 選秀完成！</h1>
+  await update(
+    ref(db,"rooms/"+roomId),
+    {
+      started:true,
+      index:0,
+      bid:0,
+      bidder:0,
+      turn:1
+    }
+  );
 
-            <h2>玩家 1</h2>
-            <p>
-                剩餘預算：$${money[1]}
-            </p>
+};
 
-            <h2>玩家 2</h2>
-            <p>
-                剩餘預算：$${money[2]}
-            </p>
 
-            <p>
-                接下來就可以進入
-                <strong>7戰4勝模擬</strong>！
-            </p>
+/* =====================================================
+   線上畫面
+===================================================== */
 
-        </div>
+function renderOnline(r){
 
-    `;
+  const p=
+  r.list[r.index];
 
-    updateMoney();
-    updateTeams();
+
+  if(!p){
+
+    startSeries(
+      r.players.p1.team,
+      r.players.p2.team
+    );
+
+    return;
+
+  }
+
+
+  document
+  .getElementById("playerName")
+  .textContent=p.name;
+
+  document
+  .getElementById("playerPosition")
+  .textContent="位置："+p.position;
+
+  document
+  .getElementById("playerOVR")
+  .textContent=p.ovr;
+
+  document
+  .getElementById("currentBid")
+  .textContent=r.bid+" 點";
+
+
+  const me=
+  role===1
+  ?r.players.p1
+  :r.players.p2;
+
+  const enemy=
+  role===1
+  ?r.players.p2
+  :r.players.p1;
+
+
+  document
+  .getElementById("myMoney")
+  .textContent=me.money;
+
+  document
+  .getElementById("enemyMoney")
+  .textContent=enemy.money;
+
+
+  showTeams(
+    me.team||[],
+    enemy.team||[]
+  );
+
+
+  const myTurn=
+  r.turn===role;
+
+
+  document
+  .getElementById("bidButton")
+  .disabled=!myTurn;
+
+  document
+  .getElementById("passButton")
+  .disabled=!myTurn;
+
+
+  document
+  .getElementById("auctionStatus")
+  .textContent=
+  myTurn
+  ?"你的回合"
+  :"等待對手出價";
+
 }
 
 
-// ================================
-// 初始化
-// ================================
+/* =====================================================
+   線上出價
+===================================================== */
 
-showPlayer();
-updateMoney();
-updateTeams();
+async function onlineBid(){
 
-</script>
+  const snap=
+  await get(
+    ref(db,"rooms/"+roomId)
+  );
 
-</body>
-</html>
+  if(!snap.exists())return;
+
+  const r=snap.val();
+
+  if(r.turn!==role){
+
+    alert("現在不是你的回合");
+
+    return;
+
+  }
+
+
+  const value=
+  Number(
+    document
+    .getElementById("bidInput")
+    .value
+  );
+
+
+  const me=
+  role===1
+  ?r.players.p1
+  :r.players.p2;
+
+
+  if(!value || value<=r.bid){
+
+    alert("出價必須高於目前價格");
+
+    return;
+
+  }
+
+
+  if(value>me.money){
+
+    alert("你的點數不夠");
+
+    return;
+
+  }
+
+
+  await update(
+    ref(db,"rooms/"+roomId),
+    {
+
+      bid:value,
+
+      bidder:role,
+
+      turn:role===1?2:1
+
+    }
+  );
+
+
+  document
+  .getElementById("bidInput")
+  .value="";
+
+}
+
+
+/* =====================================================
+   線上放棄
+===================================================== */
+
+async function onlinePass(){
+
+  const snap=
+  await get(
+    ref(db,"rooms/"+roomId)
+  );
+
+  if(!snap.exists())return;
+
+  const r=snap.val();
+
+
+  if(r.turn!==role)return;
+
+
+  if(r.bid===0){
+
+    alert("目前還沒有出價");
+
+    return;
+
+  }
+
+
+  const winner=r.bidder;
+
+  const winnerKey=
+  winner===1?"p1":"p2";
+
+
+  const player=
+  r.list[r.index];
+
+
+  const oldTeam=
+  r.players[winnerKey].team||[];
+
+
+  const newTeam=[
+    ...oldTeam,
+    player
+  ];
+
+
+  const newMoney=
+  r.players[winnerKey].money-r.bid;
+
+
+  const updates={};
+
+
+  updates[
+    "players/"+winnerKey+"/money"
+  ]=newMoney;
+
+
+  updates[
+    "players/"+winnerKey+"/team"
+  ]=newTeam;
+
+
+  updates.index=r.index+1;
+
+  updates.bid=0;
+
+  updates.bidder=0;
+
+  updates.turn=1;
+
+
+  await update(
+    ref(db,"rooms/"+roomId),
+    updates
+  );
+
+}
+
+
+/* =====================================================
+   系列賽
+===================================================== */
+
+function startSeries(team1,team2){
+
+  window.team1=team1||[];
+
+  window.team2=team2||[];
+
+  myWins=0;
+
+  enemyWins=0;
+
+  gameNumber=0;
+
+
+  hideAll();
+
+  document
+  .getElementById("series")
+  .classList.remove("hidden");
+
+
+  updateSeries();
+
+}
+
+
+function teamStrength(team){
+
+  if(!team || team.length===0)
+    return 70;
+
+
+  const total=
+  team.reduce(
+    (sum,p)=>sum+p.ovr,
+    0
+  );
+
+
+  return total/team.length;
+
+}
+
+
+function gameScore(team){
+
+  const strength=
+  teamStrength(team);
+
+  const base=
+  75+
+  (strength-85)*0.9;
+
+  return Math.max(
+    65,
+    Math.round(
+      base+
+      (Math.random()*22-11)
+    )
+  );
+
+}
+
+
+window.playNextGame=function(){
+
+  if(
+    myWins>=4 ||
+    enemyWins>=4
+  ){
+
+    return;
+
+  }
+
+
+  gameNumber++;
+
+
+  const s1=
+  gameScore(window.team1);
+
+  const s2=
+  gameScore(window.team2);
+
+
+  let a=s1;
+
+  let b=s2;
+
+
+  if(a===b){
+
+    a++;
+
+  }
+
+
+  if(a>b){
+
+    myWins++;
+
+  }
+
+  else{
+
+    enemyWins++;
+
+  }
+
+
+  const log=
+  document
+  .getElementById("gameLog");
+
+
+  log.innerHTML+=`
+
+    <div class="game">
+
+      第 ${gameNumber} 場
+
+      <br>
+
+      <b>${a} - ${b}</b>
+
+      <br>
+
+      ${a>b
+        ?"你拿下這場！"
+        :"對手拿下這場！"}
+
+    </div>
+
+  `;
+
+
+  updateSeries();
+
+
+  if(myWins>=4 || enemyWins>=4){
+
+    setTimeout(
+      finishSeries,
+      700
+    );
+
